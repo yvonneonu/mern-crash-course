@@ -26,7 +26,9 @@ import { useAuthStore } from "../store/authStore";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { user } = useAuthStore();
+  const { user, login } = useAuthStore();
+  const { isOpen, onOpen, onClose } = useDisclosure(); // Controls modal state
+
   // State for login inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
