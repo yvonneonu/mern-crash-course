@@ -4,7 +4,7 @@ export const useAuthStore = create((set) => ({
   user: null,
 
   register: async (userData) => {
-    const res = await fetch("/api/auth/register", {
+    const res = await fetch("/api/users/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,7 +19,7 @@ export const useAuthStore = create((set) => ({
   },
 
   login: async (userData) => {
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch("/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

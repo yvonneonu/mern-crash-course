@@ -105,17 +105,20 @@ const ProductCard = ({ product }) => {
         <Text fontWeight="bold" fontSize="xl" color={textColor} mb={4}>
           ${product.price}
         </Text>
-
-        <HStack spacing={2}>
-          <IconButton icon={<EditIcon />} onClick={onOpen} colorScheme="blue" />
-          {user?.checkAuth && (
+        {user?.checkAuth && (
+          <HStack spacing={2}>
+            <IconButton
+              icon={<EditIcon />}
+              onClick={onOpen}
+              colorScheme="blue"
+            />
             <IconButton
               icon={<DeleteIcon />}
               onClick={() => handleDeleteProduct(product._id)}
               colorScheme="red"
             />
-          )}
-        </HStack>
+          </HStack>
+        )}
       </Box>
 
       <Modal isOpen={isOpen} onClose={onClose}>
