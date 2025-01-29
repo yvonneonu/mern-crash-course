@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Container,
@@ -16,6 +17,16 @@ import { useAuthStore } from "../store/authStore";
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { user } = useAuthStore();
+  // State for login inputs
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    const success = await login(email, password);
+    if (success) {
+      onClose(); // Close modal after successful login
+    }
+  };
 
   return (
     <Container maxW={"1140px"} px={4}>
