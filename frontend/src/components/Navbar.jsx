@@ -50,8 +50,48 @@ const Navbar = () => {
           <Button onClick={toggleColorMode}>
             {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
           </Button>
+
+          <Button colorScheme="blue" onClick={onOpen}>
+            Login
+          </Button>
+
+          {user?.checkAuth && (
+            <Link to={"/logout"}>
+              <Button>Logout</Button>
+            </Link>
+          )}
         </HStack>
       </Flex>
+
+      {/* Login Modal */}
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Admin Login</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing={4}>
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={handleLogin}>
+              Login
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 };
