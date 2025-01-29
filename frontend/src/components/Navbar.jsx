@@ -6,6 +6,16 @@ import {
   HStack,
   Text,
   useColorMode,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Input,
+  useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
