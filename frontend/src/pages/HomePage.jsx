@@ -3,14 +3,16 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { useProductStore } from "../store/product";
+import { useAuthStore } from "../store/authStore";
 
 const HomePage = () => {
   const { fetchProducts, products } = useProductStore();
-
+  const { user } = useAuthStore();
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
-  console.log("products", products);
+  console.log("products", products, user);
+  console.log("user", localStorage.getItem("user"));
 
   return (
     <Container maxW="container.xl" py={12}>

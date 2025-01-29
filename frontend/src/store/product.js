@@ -1,9 +1,15 @@
 import { create } from "zustand";
+import { useAuthStore } from "./authStore";
 
 export const useProductStore = create((set) => ({
   products: [],
+
   setProducts: (products) => set({ products }),
   createProduct: async (newProduct) => {
+    const { token } = useAuthStore.getState().user?.token; // get the authentication state
+    if (!token) {
+      return { success: false, message: "Please login to create a product." };
+    }
     if (!newProduct.name || !newProduct.image || !newProduct.price) {
       return { success: false, message: "Please fill in all fields." };
     }
@@ -11,6 +17,7 @@ export const useProductStore = create((set) => ({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // include the token in the headers
       },
       body: JSON.stringify(newProduct),
     });
@@ -24,8 +31,16 @@ export const useProductStore = create((set) => ({
     set({ products: data.data });
   },
   deleteProduct: async (pid) => {
+    const { token } = useAuthStore.getState().user?.token; // get the authentication state
+    if (!token) {
+      return { success: false, message: "Please login to delete a product." };
+    }
+
     const res = await fetch(`/api/products/${pid}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`, // include the token in the headers
+      },
     });
     const data = await res.json();
     if (!data.success) return { success: false, message: data.message };
@@ -36,11 +51,17 @@ export const useProductStore = create((set) => ({
     }));
     return { success: true, message: data.message };
   },
+
   updateProduct: async (pid, updatedProduct) => {
+    const { token } = useAuthStore.getState().user?.token; // get the authentication state
+    if (!token) {
+      return { success: false, message: "Please login to update a product." };
+    }
     const res = await fetch(`/api/products/${pid}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // include the token in the headers
       },
       body: JSON.stringify(updatedProduct),
     });

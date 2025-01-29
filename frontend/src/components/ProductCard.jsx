@@ -21,6 +21,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useProductStore } from "../store/product";
+import { useAuthStore } from "../store/authStore";
 import { useState } from "react";
 
 const ProductCard = ({ product }) => {
@@ -30,8 +31,11 @@ const ProductCard = ({ product }) => {
   const bg = useColorModeValue("white", "gray.800");
 
   const { deleteProduct, updateProduct } = useProductStore();
+  const { user } = useAuthStore();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  console.log("user is here", user);
 
   const handleDeleteProduct = async (pid) => {
     const { success, message } = await deleteProduct(pid);
@@ -104,11 +108,13 @@ const ProductCard = ({ product }) => {
 
         <HStack spacing={2}>
           <IconButton icon={<EditIcon />} onClick={onOpen} colorScheme="blue" />
-          <IconButton
-            icon={<DeleteIcon />}
-            onClick={() => handleDeleteProduct(product._id)}
-            colorScheme="red"
-          />
+          {user?.checkAuth && (
+            <IconButton
+              icon={<DeleteIcon />}
+              onClick={() => handleDeleteProduct(product._id)}
+              colorScheme="red"
+            />
+          )}
         </HStack>
       </Box>
 
