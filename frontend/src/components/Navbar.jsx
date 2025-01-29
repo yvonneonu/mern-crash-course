@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Container,
@@ -26,19 +26,55 @@ import { useAuthStore } from "../store/authStore";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { user, login } = useAuthStore();
-  const { isOpen, onOpen, onClose } = useDisclosure(); // Controls modal state
+  const { user, login, register, checkAuth, logout } = useAuthStore();
+  const {
+    isOpen: isLoginOpen,
+    onOpen: onLoginOpen,
+    onClose: onLoginClose,
+  } = useDisclosure();
+  const {
+    isOpen: isRegisterOpen,
+    onOpen: onRegisterOpen,
+    onClose: onRegisterClose,
+  } = useDisclosure();
 
-  // State for login inputs
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // State for login and register inputs
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [name, setName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
 
   const handleLogin = async () => {
-    const success = await login(email, password);
-    if (success) {
-      onClose(); // Close modal after successful login
+    const success = await login(loginEmail, loginPassword);
+    if (success?.success) {
+      onLoginClose();
+      setLoginEmail("");
+      setLoginPassword("");
     }
   };
+
+  const handleRegister = async () => {
+    const success = await register({
+      name: name,
+      email: registerEmail,
+      password: registerPassword,
+    });
+    if (success?.success) {
+      onRegisterClose();
+      setName("");
+      setRegisterEmail("");
+      setRegisterPassword("");
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  useEffect(() => {
+    checkAuth(); // Ensure user state is updated when Navbar mounts
+  }, [checkAuth]);
 
   return (
     <Container maxW={"1140px"} px={4}>
@@ -59,7 +95,7 @@ const Navbar = () => {
           bgGradient={"linear(to-r, cyan.400, blue.500)"}
           bgClip={"text"}
         >
-          <Link to={"/"}>Product Store 🛒</Link>
+          <Link to={"/"}>YV Store 🛒</Link>
         </Text>
 
         <HStack spacing={2} alignItems={"center"}>
@@ -74,37 +110,84 @@ const Navbar = () => {
             {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
           </Button>
 
-          <Button colorScheme="blue" onClick={onOpen}>
-            Login
-          </Button>
+          {!user?.checkAuth ? (
+            <>
+              <Button colorScheme="blue" onClick={onLoginOpen}>
+                Login
+              </Button>
+              <Button colorScheme="green" onClick={onRegisterOpen}>
+                Register
+              </Button>
+            </>
+          ) : (
+            <Button colorScheme="blue" onClick={handleLogout}>
+              Logout
+            </Button>
+          )}
         </HStack>
       </Flex>
 
       {/* Login Modal */}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isLoginOpen} onClose={onLoginClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Admin Login</ModalHeader>
+          <ModalHeader>Login</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <VStack spacing={4}>
               <Input
                 type="email"
                 placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
               />
               <Input
                 type="password"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
               />
             </VStack>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" onClick={handleLogin}>
               Login
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Register Modal */}
+      <Modal isOpen={isRegisterOpen} onClose={onRegisterClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Register</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing={4}>
+              <Input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                type="email"
+                placeholder="Email"
+                value={registerEmail}
+                onChange={(e) => setRegisterEmail(e.target.value)}
+              />
+              <Input
+                type="password"
+                placeholder="Password"
+                value={registerPassword}
+                onChange={(e) => setRegisterPassword(e.target.value)}
+              />
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="green" onClick={handleRegister}>
+              Register
             </Button>
           </ModalFooter>
         </ModalContent>
