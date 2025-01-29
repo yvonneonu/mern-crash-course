@@ -54,12 +54,6 @@ const Navbar = () => {
           <Button colorScheme="blue" onClick={onOpen}>
             Login
           </Button>
-
-          {user?.checkAuth && (
-            <Link to={"/logout"}>
-              <Button>Logout</Button>
-            </Link>
-          )}
         </HStack>
       </Flex>
 
