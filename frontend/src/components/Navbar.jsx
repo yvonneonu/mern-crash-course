@@ -23,6 +23,7 @@ import { PlusSquareIcon } from "@chakra-ui/icons";
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { useAuthStore } from "../store/authStore";
+import { FaGoogle } from "react-icons/fa";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -38,7 +39,7 @@ const Navbar = () => {
     onClose: onRegisterClose,
   } = useDisclosure();
 
-  // State for login and register inputs
+  // State for login and register inputs expo router, typescript, instagram
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [name, setName] = useState("");
@@ -52,6 +53,12 @@ const Navbar = () => {
       setLoginEmail("");
       setLoginPassword("");
     }
+  };
+
+  const handleOAuth = async () => {
+    window.open("http://localhost:5000/auth/google", "_self");
+
+    // window.location.href = "http://localhost:5000/auth/instagram"; // Backend Route
   };
 
   const handleRegister = async () => {
@@ -75,6 +82,10 @@ const Navbar = () => {
   useEffect(() => {
     checkAuth(); // Ensure user state is updated when Navbar mounts
   }, [checkAuth]);
+
+  const instagramLogin = () => {
+    window.location.href = "http://localhost:5000/auth/instagram"; // Backend Route
+  };
 
   return (
     <Container maxW={"1140px"} px={4}>
@@ -124,13 +135,17 @@ const Navbar = () => {
               Logout
             </Button>
           )}
+
+          <Button colorScheme="pink" onClick={instagramLogin}>
+            Login with Instagram
+          </Button>
         </HStack>
       </Flex>
 
       {/* Login Modal */}
       <Modal isOpen={isLoginOpen} onClose={onLoginClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent className="w-full bg-black">
           <ModalHeader>Login</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -149,8 +164,17 @@ const Navbar = () => {
               />
             </VStack>
           </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" onClick={handleLogin}>
+          <ModalFooter gap={2}>
+            <Button
+              colorScheme="blue"
+              onClick={() => {
+                console.log("knkj kj m");
+                handleOAuth();
+              }}
+            >
+              <FaGoogle />
+            </Button>
+            <Button colorScheme="blue" onClick={handleLogin} className="ml-5">
               Login
             </Button>
           </ModalFooter>
