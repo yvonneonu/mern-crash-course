@@ -1,6 +1,6 @@
 //store/authStore.js
 import { create } from "zustand";
-const URL = import.meta.env.VITE_FRONTEND_URL;
+const URL = import.meta.env.VITE_FRONTEND_URL || "";
 
 export const useAuthStore = create((set) => ({
   user: { checkAuth: false },
