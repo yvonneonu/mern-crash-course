@@ -61,7 +61,7 @@ router.get(
         expiresIn: "1d",
       });
 
-      res.redirect(`${process.env.URL}?token=${token}`);
+      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
