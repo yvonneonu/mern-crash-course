@@ -6,11 +6,6 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-const FRONTEND_URL =
-  process.env.NODE_ENV === "development"
-    ? process.env.FRONTEND_URL // Replace with your local frontend URL
-    : "https://mern-crash-course-zgcv.onrender.com";
-
 //Google Auth Routes
 router.get(
   "/google",
@@ -21,7 +16,6 @@ router.get(
 
 //hand book
 
-console.log("process.env.FRONTEND_URL", FRONTEND_URL);
 //facebook routes
 router.get(
   "/facebook",
@@ -44,7 +38,7 @@ router.get(
         expiresIn: "1d",
       });
 
-      res.redirect(`${FRONTEND_URL}?token=${token}`);
+      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
@@ -57,6 +51,12 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
     try {
+      const frontendUrl =
+        process.env.NODE_ENV === "production"
+          ? process.env.FRONTEND_URL ||
+            "https://mern-crash-course-zgcv.onrender.com"
+          : process.env.FRONTEND_URL;
+
       const body = {
         _id: req.user._id,
         name: req.user.name,
@@ -66,7 +66,8 @@ router.get(
         expiresIn: "1d",
       });
 
-      res.redirect(`${FRONTEND_URL}?token=${token}`);
+      console.log("token", frontendUrl);
+      res.redirect(`${frontendUrl}?token=${token}`);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
