@@ -6,6 +6,11 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
+const FRONTEND_URL =
+  process.env.NODE_ENV === "development"
+    ? process.env.FRONTEND_URL // Replace with your local frontend URL
+    : "https://mern-crash-course-zgcv.onrender.com";
+
 //Google Auth Routes
 router.get(
   "/google",
@@ -16,7 +21,7 @@ router.get(
 
 //hand book
 
-console.log("process.env.FRONTEND_URL", process.env.FRONTEND_URL);
+console.log("process.env.FRONTEND_URL", FRONTEND_URL);
 //facebook routes
 router.get(
   "/facebook",
@@ -39,7 +44,7 @@ router.get(
         expiresIn: "1d",
       });
 
-      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
+      res.redirect(`${FRONTEND_URL}?token=${token}`);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
@@ -61,7 +66,7 @@ router.get(
         expiresIn: "1d",
       });
 
-      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
+      res.redirect(`${FRONTEND_URL}?token=${token}`);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
