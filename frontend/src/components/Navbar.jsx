@@ -1,3 +1,4 @@
+//components/Navbar.js
 import { useState, useEffect } from "react";
 import {
   Button,
@@ -24,10 +25,24 @@ import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import { useAuthStore } from "../store/authStore";
 import { FaGoogle } from "react-icons/fa";
+import { useSearchParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { user, login, register, checkAuth, logout } = useAuthStore();
+  const {
+    user,
+    login,
+    register,
+    checkAuth,
+    logout,
+    googleLogin,
+    instagramLogin,
+  } = useAuthStore();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
+  console.log(token);
+
   const {
     isOpen: isLoginOpen,
     onOpen: onLoginOpen,
@@ -55,12 +70,6 @@ const Navbar = () => {
     }
   };
 
-  const handleOAuth = async () => {
-    window.open("http://localhost:5000/auth/google", "_self");
-
-    // window.location.href = "http://localhost:5000/auth/instagram"; // Backend Route
-  };
-
   const handleRegister = async () => {
     const success = await register({
       name: name,
@@ -80,12 +89,17 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    checkAuth(); // Ensure user state is updated when Navbar mounts
-  }, [checkAuth]);
-
-  const instagramLogin = () => {
-    window.location.href = "http://localhost:5000/auth/instagram"; // Backend Route
-  };
+    if (token) {
+      // Decode the JWT token and get the user data
+      const decodedToken = jwtDecode(token);
+      console.log(decodedToken);
+      // Store the user info (you can customize this depending on your needs)
+      localStorage.setItem("user", JSON.stringify(decodedToken));
+      checkAuth();
+    } else {
+      checkAuth();
+    }
+  }, [checkAuth, token]);
 
   return (
     <Container maxW={"1140px"} px={4}>
@@ -165,15 +179,10 @@ const Navbar = () => {
             </VStack>
           </ModalBody>
           <ModalFooter gap={2}>
-            <Button
-              colorScheme="blue"
-              onClick={() => {
-                console.log("knkj kj m");
-                handleOAuth();
-              }}
-            >
+            <Button colorScheme="blue" onClick={googleLogin}>
               <FaGoogle />
             </Button>
+
             <Button colorScheme="blue" onClick={handleLogin} className="ml-5">
               Login
             </Button>

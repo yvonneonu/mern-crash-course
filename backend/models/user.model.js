@@ -14,11 +14,20 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      // required: function () {
+      //   return !this.googleId; // Password is required only if googleId is not provided
+      // },
+
       required: true,
     },
     isAdmin: {
       type: Boolean,
       default: false,
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      required: false,
     },
   },
   {

@@ -1,3 +1,4 @@
+//routes/user.route.js
 import express from "express";
 import {
   loginUser,

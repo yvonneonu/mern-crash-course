@@ -1,5 +1,7 @@
+//controllers/user.controller.js
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
+//import passport from "passport";
 
 //Generate JWT token
 
@@ -54,7 +56,31 @@ export const registerUser = async (req, res) => {
 };
 
 //Login User
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res, next) => {
+  // passport.authenticate("login", (err, user, info) => {
+  //   try {
+  //     if (err) {
+  //       return next(new Error("An error occurred."));
+  //     }
+  //     if (!user) {
+  //       return res.status(401).json({ success: false, message: info.message });
+  //     }
+  //     req.login(user, (err) => {
+  //       if (err) return next(err);
+  //       const body = { email: user.email, password: user.password };
+  //       const token = jwt.sign({ user: body }, process.env.JWT_SECRET, {
+  //         expiresIn: "1d",
+  //       });
+
+  //       return res.json({
+  //         token,
+  //         body,
+  //       });
+  //     });
+  //   } catch (error) {
+  //     return res.status(500).json({ success: false, message: error.message });
+  //   }
+  // })(req, res, next);
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });

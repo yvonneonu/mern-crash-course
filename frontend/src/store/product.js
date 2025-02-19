@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { useAuthStore } from "./authStore";
-
+const URL = import.meta.env.VITE_FRONTEND_URL;
 export const useProductStore = create((set) => ({
   products: [],
 
@@ -13,7 +13,7 @@ export const useProductStore = create((set) => ({
     if (!newProduct.name || !newProduct.image || !newProduct.price) {
       return { success: false, message: "Please fill in all fields." };
     }
-    const res = await fetch("/api/products", {
+    const res = await fetch(`${URL}/api/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +26,7 @@ export const useProductStore = create((set) => ({
     return { success: true, message: "Product created successfully" };
   },
   fetchProducts: async () => {
-    const res = await fetch("/api/products");
+    const res = await fetch(`${URL}/api/products`);
     const data = await res.json();
     set({ products: data.data });
   },
@@ -36,7 +36,7 @@ export const useProductStore = create((set) => ({
       return { success: false, message: "Please login to delete a product." };
     }
 
-    const res = await fetch(`/api/products/${pid}`, {
+    const res = await fetch(`${URL}/api/products/${pid}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`, // include the token in the headers
@@ -57,7 +57,7 @@ export const useProductStore = create((set) => ({
     if (!token) {
       return { success: false, message: "Please login to update a product." };
     }
-    const res = await fetch(`/api/products/${pid}`, {
+    const res = await fetch(`${URL}/api/products/${pid}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
