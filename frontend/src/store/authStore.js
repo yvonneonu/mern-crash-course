@@ -9,8 +9,8 @@ export const useAuthStore = create((set) => ({
   googleLogin: () => {
     window.location.href = `${URL}/api/auth/google`;
   },
-  instagramLogin: () => {
-    window.location.href = `${URL}/api/auth/instagram`;
+  faceBookLogin: () => {
+    window.location.href = `${URL}/api/auth/facebook`;
   },
 
   register: async (userData) => {

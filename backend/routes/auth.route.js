@@ -16,36 +16,36 @@ router.get(
 
 //hand book
 
-// //facebook routes
-// router.get(
-//   "/facebook",
-//   passport.authenticate("facebook", {
-//     scope: ["email"],
-//   })
-// );
+//facebook routes
+router.get(
+  "/facebook",
+  passport.authenticate("facebook", {
+    scope: ["email"],
+  })
+);
 
-// router.get(
-//   "/facebook/callback",
-//   passport.authenticate("facebook", { failureRedirect: "/login" }),
-//   (req, res) => {
-//     try {
-//       const body = {
-//         _id: req.user._id,
-//         name: req.user.name,
-//         email: req.user.email,
-//       };
-//       const token = jwt.sign(body, process.env.JWT_SECRET, {
-//         expiresIn: "30d",
-//       });
-//       console.log(token);
+router.get(
+  "/facebook/callback",
+  passport.authenticate("facebook", { failureRedirect: "/login" }),
+  (req, res) => {
+    try {
+      const body = {
+        _id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+      };
+      const token = jwt.sign(body, process.env.JWT_SECRET, {
+        expiresIn: "30d",
+      });
+      console.log(token);
 
-//       res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).send("Internal Server Error");
-//     }
-//   }
-// );
+      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
 
 router.get(
   "/google/callback",
@@ -60,13 +60,9 @@ router.get(
       const token = jwt.sign(body, process.env.JWT_SECRET, {
         expiresIn: "30d",
       });
-      console.log(process.env.NODE_ENV);
-      // Check if the environment is local or production
-      const frontendUrl = "https://mern-crash-course-zgcv.onrender.com";
+      console.log(token);
 
-      res.redirect(`${frontendUrl}?token=${token}`);
-
-      // res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
+      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");

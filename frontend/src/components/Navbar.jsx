@@ -37,7 +37,7 @@ const Navbar = () => {
     checkAuth,
     logout,
     googleLogin,
-    instagramLogin,
+    faceBookLogin,
   } = useAuthStore();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
@@ -150,8 +150,8 @@ const Navbar = () => {
             </Button>
           )}
 
-          <Button colorScheme="pink" onClick={instagramLogin}>
-            Login with Instagram
+          <Button colorScheme="pink" onClick={faceBookLogin}>
+            Login with Facebook
           </Button>
         </HStack>
       </Flex>

@@ -1,6 +1,6 @@
 //config/passport.js
 import passport from "passport";
-import { Strategy as InstagramStrategy } from "passport-instagram";
+import { Strategy as FacebookStrategy } from "passport-facebook";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import User from "../models/user.model.js";
 import dotenv from "dotenv";
@@ -57,36 +57,38 @@ passport.use(
 
 // Instagram Strategy
 passport.use(
-  new InstagramStrategy(
+  new FacebookStrategy(
     {
-      clientID: process.env.INSTAGRAM_CLIENT_ID,
-      clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
-      callbackURL: `${process.env.BACKEND}/api/auth/instagram/callback`,
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      callbackURL: `${process.env.BACKEND}/api/auth/facebook/callback`,
+      profileFields: ["id", "displayName", "photos", "email"],
       // scope: ["public_content", "likes", "comments", "relationships"],
     },
     async (accessToken, refreshToken, profile, done) => {
       console.log("profile", profile);
-      // try {
-      //   let user = await User.findOne({
-      //     email: `${profile.username}@instagram.com`,
-      //   });
 
-      //   if (user) {
-      //     return done(null, user);
-      //   }
+      try {
+        let user = await User.findOne({
+          email: `${profile.username}@instagram.com`,
+        });
 
-      //   // If user doesn't exist, create a new one
-      //   user = await User.create({
-      //     name: profile.displayName || profile.username,
-      //     email: `${profile.username}@instagram.com`,
-      //     password: profile.id, // Using profile ID as password for OAuth users
-      //     // instagramId: profile.id,
-      //   });
+        if (user) {
+          return done(null, user);
+        }
 
-      //   return done(null, user);
-      // } catch (error) {
-      //   return done(error, null);
-      // }
+        // If user doesn't exist, create a new one
+        user = await User.create({
+          name: profile.displayName || profile.username,
+          email: `${profile.username}@instagram.com`,
+          password: profile.id, // Using profile ID as password for OAuth users
+          // instagramId: profile.id,
+        });
+
+        return done(null, user);
+      } catch (error) {
+        return done(error, null);
+      }
     }
   )
 );
