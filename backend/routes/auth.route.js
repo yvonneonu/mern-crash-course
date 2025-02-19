@@ -1,23 +1,11 @@
+//routes/auth.route.js
 import express from "express";
 import passport from "../config/passport.js";
 import { generateToken } from "../controllers/user.controller.js";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
-
-// Helper function to get frontend URL
-const getFrontendURL = () => {
-  // In production, always use the Render URL
-  if (process.env.NODE_ENV === "production") {
-    return "https://mern-crash-course-zgcv.onrender.com";
-  }
-  // In development, use the local URL
-  return "http://localhost:5173";
-};
-
-// Log the current environment and URL
-console.log("Current environment:", process.env.NODE_ENV);
-console.log("Frontend URL:", getFrontendURL());
+console.log("FRONTEND_URL from env:", process.env.FRONTEND_URL);
 
 //Google Auth Routes
 router.get(
@@ -26,6 +14,8 @@ router.get(
     scope: ["https://www.googleapis.com/auth/plus.login", "email"],
   })
 );
+
+//hand book
 
 //facebook routes
 router.get(
@@ -49,11 +39,9 @@ router.get(
         expiresIn: "1d",
       });
 
-      const frontendURL = getFrontendURL();
-      console.log("Redirecting to:", `${frontendURL}?token=${token}`);
-      res.redirect(`${frontendURL}?token=${token}`);
+      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
     } catch (error) {
-      console.error("Facebook callback error:", error);
+      console.error(error);
       res.status(500).send("Internal Server Error");
     }
   }
@@ -73,16 +61,12 @@ router.get(
         expiresIn: "1d",
       });
 
-      const frontendURL = getFrontendURL();
-      console.log("Redirecting to:", `${frontendURL}?token=${token}`);
-      res.redirect(`${frontendURL}?token=${token}`);
+      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
     } catch (error) {
-      console.error("Google callback error:", error);
+      console.error(error);
       res.status(500).send("Internal Server Error");
     }
   }
 );
-
-// Debug route to check environment variables
 
 export default router;
