@@ -14,6 +14,39 @@ router.get(
   })
 );
 
+//hand book
+
+// //facebook routes
+// router.get(
+//   "/facebook",
+//   passport.authenticate("facebook", {
+//     scope: ["email"],
+//   })
+// );
+
+// router.get(
+//   "/facebook/callback",
+//   passport.authenticate("facebook", { failureRedirect: "/login" }),
+//   (req, res) => {
+//     try {
+//       const body = {
+//         _id: req.user._id,
+//         name: req.user.name,
+//         email: req.user.email,
+//       };
+//       const token = jwt.sign(body, process.env.JWT_SECRET, {
+//         expiresIn: "30d",
+//       });
+//       console.log(token);
+
+//       res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).send("Internal Server Error");
+//     }
+//   }
+// );
+
 router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
@@ -28,31 +61,19 @@ router.get(
         expiresIn: "30d",
       });
       console.log(token);
+      // Check if the environment is local or production
+      const frontendUrl =
+        process.env.NODE_ENV === "production"
+          ? "https://mern-crash-course-zgcv.onrender.com"
+          : process.env.FRONTEND_URL;
 
-      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
+      res.redirect(`${frontendUrl}?token=${token}`);
+
+      // res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
     }
-  }
-);
-
-// Instagram Auth Routes
-router.get(
-  "/instagram",
-  passport.authenticate("instagram", {
-    scope: ["instagram_business_basic"],
-  })
-);
-
-// Instagram Callback Route
-router.get(
-  "/instagram/callback",
-  passport.authenticate("instagram", { failureRedirect: "/login" }),
-  (req, res) => {
-    console.log("Success", req.user);
-    const token = generateToken(req.user._id);
-    res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
   }
 );
 
