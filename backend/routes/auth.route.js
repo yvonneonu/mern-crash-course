@@ -16,6 +16,7 @@ router.get(
 
 //hand book
 
+console.log("process.env.FRONTEND_URL", process.env.FRONTEND_URL);
 //facebook routes
 router.get(
   "/facebook",
