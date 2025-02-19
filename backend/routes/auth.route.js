@@ -29,7 +29,7 @@ router.get(
       });
       console.log(token);
 
-      res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
+      res.redirect(`/`);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
