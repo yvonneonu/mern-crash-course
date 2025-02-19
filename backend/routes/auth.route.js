@@ -45,6 +45,7 @@ router.get(
   })
 );
 
+// Instagram Callback Route
 router.get(
   "/instagram/callback",
   passport.authenticate("instagram", { failureRedirect: "/login" }),
