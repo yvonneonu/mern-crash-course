@@ -62,10 +62,7 @@ router.get(
       });
       console.log(process.env.NODE_ENV);
       // Check if the environment is local or production
-      const frontendUrl =
-        process.env.NODE_ENV === "development"
-          ? process.env.FRONTEND_URL
-          : "https://mern-crash-course-zgcv.onrender.com";
+      const frontendUrl = "https://mern-crash-course-zgcv.onrender.com";
 
       res.redirect(`${frontendUrl}?token=${token}`);
 
