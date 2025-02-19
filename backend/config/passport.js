@@ -66,11 +66,9 @@ passport.use(
       // scope: ["public_content", "likes", "comments", "relationships"],
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log("profile", profile);
-
       try {
         let user = await User.findOne({
-          email: `${profile.username}@instagram.com`,
+          email: profile.emails[0].value,
         });
 
         if (user) {
@@ -80,9 +78,9 @@ passport.use(
         // If user doesn't exist, create a new one
         user = await User.create({
           name: profile.displayName || profile.username,
-          email: `${profile.username}@instagram.com`,
+          email: profile.emails[0].value,
           password: profile.id, // Using profile ID as password for OAuth users
-          // instagramId: profile.id,
+          instagramId: profile.id,
         });
 
         return done(null, user);
