@@ -60,12 +60,12 @@ router.get(
       const token = jwt.sign(body, process.env.JWT_SECRET, {
         expiresIn: "30d",
       });
-      console.log(token);
+      console.log(process.env.NODE_ENV);
       // Check if the environment is local or production
       const frontendUrl =
-        process.env.NODE_ENV === "production"
-          ? "https://mern-crash-course-zgcv.onrender.com"
-          : process.env.FRONTEND_URL;
+        process.env.NODE_ENV === "development"
+          ? process.env.FRONTEND_URL
+          : "https://mern-crash-course-zgcv.onrender.com";
 
       res.redirect(`${frontendUrl}?token=${token}`);
 
