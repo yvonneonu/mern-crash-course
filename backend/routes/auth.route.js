@@ -68,7 +68,9 @@ router.get(
       });
 
       console.log("token", frontendUrl);
-      res.redirect(`${frontendUrl}?token=${token}`);
+      res.redirect(
+        `https://mern-crash-course-zgcv.onrender.com?token=${token}`
+      );
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
