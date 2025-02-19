@@ -35,9 +35,8 @@ router.get(
         email: req.user.email,
       };
       const token = jwt.sign(body, process.env.JWT_SECRET, {
-        expiresIn: "30d",
+        expiresIn: "1d",
       });
-      console.log(token);
 
       res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
     } catch (error) {
@@ -58,9 +57,8 @@ router.get(
         email: req.user.email,
       };
       const token = jwt.sign(body, process.env.JWT_SECRET, {
-        expiresIn: "30d",
+        expiresIn: "1d",
       });
-      console.log(token);
 
       res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
     } catch (error) {

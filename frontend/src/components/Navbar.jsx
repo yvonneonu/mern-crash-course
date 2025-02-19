@@ -27,6 +27,7 @@ import { useAuthStore } from "../store/authStore";
 import { FaGoogle } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { FaFacebookSquare } from "react-icons/fa";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -149,10 +150,6 @@ const Navbar = () => {
               Logout
             </Button>
           )}
-
-          <Button colorScheme="pink" onClick={faceBookLogin}>
-            Login with Facebook
-          </Button>
         </HStack>
       </Flex>
 
@@ -182,7 +179,9 @@ const Navbar = () => {
             <Button colorScheme="blue" onClick={googleLogin}>
               <FaGoogle />
             </Button>
-
+            <Button colorScheme="blue" onClick={faceBookLogin}>
+              <FaFacebookSquare />
+            </Button>
             <Button colorScheme="blue" onClick={handleLogin} className="ml-5">
               Login
             </Button>
