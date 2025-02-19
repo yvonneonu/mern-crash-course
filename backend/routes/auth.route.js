@@ -53,10 +53,8 @@ router.get(
   (req, res) => {
     try {
       const frontendUrl =
-        process.env.NODE_ENV === "production"
-          ? process.env.FRONTEND_URL ||
-            "https://mern-crash-course-zgcv.onrender.com"
-          : process.env.FRONTEND_URL;
+        "https://mern-crash-course-zgcv.onrender.com" ||
+        process.env.FRONTEND_URL;
 
       const body = {
         _id: req.user._id,
@@ -68,9 +66,7 @@ router.get(
       });
 
       console.log("token", frontendUrl);
-      res.redirect(
-        `https://mern-crash-course-zgcv.onrender.com?token=${token}`
-      );
+      res.redirect(`${frontendUrl}?token=${token}`);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
