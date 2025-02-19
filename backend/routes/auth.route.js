@@ -5,6 +5,7 @@ import { generateToken } from "../controllers/user.controller.js";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
+console.log("FRONTEND_URL from env:", process.env.FRONTEND_URL);
 
 //Google Auth Routes
 router.get(
